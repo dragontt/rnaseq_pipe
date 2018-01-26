@@ -37,7 +37,7 @@ def build_alignment(samples, genome_index):
 		else:
 			recipe += 'hisat2 -p 2 --rg-id='+ sample + ' -x '+ genome_index +' --dta --rna-strandness RF -U '+ seqs[0] +' -S '+ bam_file +'; '
 		## sort bam file
-		recipe += 'samtools sort -t /tmp/'+ sample +'.sort_bam -o '+ bam_file +' '+ sorted_bam_file +'; '
+		recipe += 'samtools sort -T /tmp/'+ sample +'.sort_bam -o '+ sorted_bam_file +' '+ bam_file +'; '
 		recipe += 'rm ' + bam_file
 		## set alignment dictionary
 		align_dict[sorted_bam_file] = {'prereq': ' '.join(seqs), 
