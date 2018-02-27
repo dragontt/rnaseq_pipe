@@ -22,7 +22,7 @@ def build_alignment(samples, genome_index):
 	align_dict = {}
 	for i,row in samples.iterrows():
 		## define variables
-		sample = row['SAMPLE']
+		sample = '_'.join([row['RUN'],row['SAMPLE']])
 		seqs = [x.strip('" ') for x in row['SEQUENCE'].split(',')]
 		paired = True if len(seqs) == 2 else False
 		target_dir = 'alignment/hisat2/'+ sample
@@ -49,7 +49,7 @@ def build_alignment(samples, genome_index):
 def build_expression_quantification(samples, reference_gtf):
 	expr_dict = {}
 	for i,row in samples.iterrows():
-		sample = row['SAMPLE']
+		sample = '_'.join([row['RUN'],row['SAMPLE']])
 		prereq = 'alignment/hisat2/'+ sample +'/aligned_reads_sorted.bam'
 		target_dir = 'expression/stringtie/'+ sample
 		output_gtf_file = target_dir +'/gene_expression.gtf'
