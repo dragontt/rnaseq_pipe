@@ -1,7 +1,0 @@
-SAMPLE	SEQUENCE
-HBR_Rep1	"sequence/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq,sequence/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"
-HBR_Rep2	"sequence/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq,sequence/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"
-HBR_Rep3	"sequence/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq,sequence/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq"
-UHR_Rep1	"sequence/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq,sequence/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq"
-UHR_Rep2	"sequence/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq,sequence/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq"
-UHR_Rep3	"sequence/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq,sequence/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq"
