@@ -1,30 +1,33 @@
 # Human RNA-seq pipeline
 
 ### Package installation
-Follow instructions from https://github.com/griffithlab/rnaseq_tutorial/wiki/Installation. Note: use OSX version instead of Linux, if working on a Mac.
+Follow instructions in [RNA-seq tutorial](https://github.com/griffithlab/rnaseq_tutorial/wiki/Installation). Note: use OSX version instead of Linux, if working on a Mac.
+
+Additional tools used in this pipeline are [HTSeq](http://htseq.readthedocs.io/en/master/count.html#usage) for calculating raw read counts and [Mutect2](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.beta.4/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php) in GATK suite for variant calling.
 
 ### Configure tools
-Required for each run. This configures the paths for executable tools.
+Update `$HOME/.profile` to configure the paths for executable tools.
 ```
 export PATH=tools/hisat2-2.0.0-beta/:$PATH
 export PATH=tools/samtools-1.3.1/:$PATH
 export PATH=tools/stringtie-1.3.3b.OSX_x86_64/:$PATH
+export PATH=/home/rnaseq_pipe/tools/gatk-4.0.6.0/:$PATH
 ```
 
 ### Build genome index
-This builds the genome index by `hisat2-build` tool.
+This builds the genome index by `hisat2-build` tool. You may also swap this for other aligners, and use their genome indexing tools.
 ```
 hisat2-build GRCh38/chr22_ERCC92.fa GRCh38/hisat2_index/chr22_ERCC92
 ```
 
-### Make job script to run alignment
-This automatically makes the job scripts to process all samples based on the sample summary file.
+### Create job script for batch processing
+This step automatically creates the job scripts (in makefile fashion) that is used for processing a batch of samples annotated in the sample summary file.
 ```
-python tools/build_job_script.py -s metadata/sample_summary.txt -i GRCh38/hisat2_index/chr22_ERCC92 -r GRCh38/genes_chr22_ERCC92.gtf > job_scripts/alignment_expression.makefile
+python tools/build_job_script.py -s metadata/sample_summary.txt -i GRCh38/hisat2_index/chr22_ERCC92 -r GRCh38/genes_chr22_ERCC92.gtf > job_scripts/<process_batch>.makefile
 ```
 
 ### Run jobs
-It uses `make` mechanism to process samples with parallelization if applicable. Define number of jobs running in parallel with `-j`. The configuration of tool paths may require adjustment if working with task management system, e.g. dispatching distributed jobs.
+This step uses the `make` mechanism as instructed by makefile (from above) to process samples in parallelized fashion. Define number of jobs running in parallel with `-j`. The configuration of tool paths may require adjustment if working with task management system, e.g. dispatching distributed jobs.
 ```
-make -j 4 -f job_scripts/alignment_expression.makefile all > log/run_log.out 2> log/run_log.err
+make -j 4 -f job_scripts/<process_batch>.makefile all > log/<process_batch>.out 2> log/<process_batch>.err
 ```
