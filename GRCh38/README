@@ -1,0 +1,9 @@
+Ensembl release 92
+GRCh38.p10
+
+Genome download:
+ftp://ftp.ensembl.org/pub/release-92/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+Gene annotation:
+ftp://ftp.ensembl.org/pub/release-92/gtf/homo_sapiens/Homo_sapiens.GRCh38.92.gtf.gz
+

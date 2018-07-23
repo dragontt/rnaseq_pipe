@@ -1,0 +1,11 @@
+tools/*
+!tools/build_job_script.py
+log
+report
+metadata
+sequence
+GRCh38/*
+!GRCh38/README
+alignment
+expression
+var_calling
