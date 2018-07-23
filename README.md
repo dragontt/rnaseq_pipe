@@ -5,7 +5,7 @@ Follow instructions in [RNA-seq tutorial](https://github.com/griffithlab/rnaseq_
 
 Additional tools used in this pipeline are [HTSeq](http://htseq.readthedocs.io/en/master/count.html#usage) for calculating raw read counts and [Mutect2](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.beta.4/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php) in GATK suite for variant calling.
 
-### Configure and tools
+### Configure tools
 Update `$HOME/.profile` to configure the paths for executable tools.
 ```
 export PATH=tools/hisat2-2.0.0-beta/:$PATH
