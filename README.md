@@ -1,17 +1,22 @@
 # Human RNA-seq pipeline
 
-### Package installation
+### Dependency installation
 Follow instructions in [RNA-seq tutorial](https://github.com/griffithlab/rnaseq_tutorial/wiki/Installation). Note: use OSX version instead of Linux, if working on a Mac.
 
 Additional tools used in this pipeline are [HTSeq](http://htseq.readthedocs.io/en/master/count.html#usage) for calculating raw read counts and [Mutect2](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.beta.4/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php) in GATK suite for variant calling.
 
-### Configure tools
+### Configure and tools
 Update `$HOME/.profile` to configure the paths for executable tools.
 ```
 export PATH=tools/hisat2-2.0.0-beta/:$PATH
 export PATH=tools/samtools-1.3.1/:$PATH
 export PATH=tools/stringtie-1.3.3b.OSX_x86_64/:$PATH
 export PATH=/home/rnaseq_pipe/tools/gatk-4.0.6.0/:$PATH
+```
+
+### Make directories
+```
+mkdir -p {metadata,log,job_scripts,report,sequence,alignment/hisat2,var_calling/mutect2}
 ```
 
 ### Build genome index
