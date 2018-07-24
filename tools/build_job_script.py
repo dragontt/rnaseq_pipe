@@ -16,6 +16,12 @@ def parse_args(argv):
 						help='Annotation reference file in GTF/GFF3 format.')
 	# parser.add_argument('-g', '--gene_list',
 	# 					help='Gene list.')
+	parser.add_argument('--variant-filter-expr', 
+						default='DP <= 30 || (POP_AF >= 0.95 || (POP_AF <= 0.55 && POP_AF >= 0.45) || POP_AF <= 0.05) || ECNT <= 5',
+						help='Filter variant calls based on INFO and FORMAT annotations. Use JEXL expressions.')
+	parser.add_argument('--variant-filter-name', 
+						default='DPl30-AF.95-.55|.45-.05-ECNTg5',
+						help='Variant filter name.')
 	return parser.parse_args(argv[1:])
 
 
@@ -74,19 +80,22 @@ def build_expression_quantification(samples, ref_gtf, tool='htseq'):
 	return built_dict
 
 
-def build_variant_calling(samples, ref_genome, xxx, tool="mutect2"):
+def build_variant_calling(samples, ref_genome, xxx, tool="mutect2", filter_expr=filter_expr, filter_name=filter_name):
 	built_dict = {}
 	for i,row in samples.iterrows():
 		sample = '_'.join([row['RUN'],row['SAMPLE']])
 		prereq = 'alignment/hisat2/'+ sample +'/aligned_only.bam'
-
+		## call variants
 		target_dir = 'var_calling/'+ tool +'/'+ sample
 		output_vcf = target_dir +'/tumor_variants.vcf.gz'
 		log_prefix = target_dir +'/'+ tool
 		recipe = 'rm -rf '+ target_dir +'; mkdir '+ target_dir +'; '
-		recipe += 'gatk Mutect2 -R '+ ref_genome +' -I '+ prereq +' -tumor '+ sample +' -VS STRICT --germline-resource '+ xxx +'--af-of-alleles-not-in-resource 0.0000025 --disable-read-filter MateOnSameContigOrNoMappedMateReadFilter -O '+ output_vcf +' > '+ log_prefix +'.out 2> '+ log_prefix +'.err;'
+		recipe += 'gatk Mutect2 -R '+ ref_genome +' -I '+ prereq +' -tumor '+ sample +' -VS STRICT --germline-resource '+ xxx +'--af-of-alleles-not-in-resource 0.0000025 --disable-read-filter MateOnSameContigOrNoMappedMateReadFilter -O '+ output_vcf +' > '+ log_prefix +'.out 2> '+ log_prefix +'.err; '
+		## filter variants
+		output_filtered_vcf = target_dir +'/filtered_tumor_variants.vcf'
+		recipe += 'gatk VariantFiltration -V '+ output_vcf +' -O '+ output_filtered_vcf +' --filter-expression "'+ filter_expr +'" --filter-name "'+ filter_name +'"; '
 		## set vc dict
-		built_dict[output_file] = {'prereq': prereq, 'recipe': recipe}
+		built_dict[output_filtered_vcf] = {'prereq': prereq, 'recipe': recipe}
 	return built_dict
 
 
@@ -108,7 +117,7 @@ def main(argv):
 
 	# sys.stdout.write('all: $(EXPRESSIONS)')
 
-	vc_dict = build_variant_calling(samples, parsed.reference_genome, xxx)
+	vc_dict = build_variant_calling(samples, parsed.reference_genome, xxx, filter_expr=parsed.filter-expression, filter_name=parsed.filter-name)
 	for target in sorted(vc_dict.keys()):
 		sys.stdout.write('%s: %s\n\t%s\n' % (target, vc_dict[target]['prereq'], vc_dict[target]['recipe']))
 	sys.stdout.write('VARCALLS = %s\n' % ' '.join(sorted(expr_dict.keys())))
