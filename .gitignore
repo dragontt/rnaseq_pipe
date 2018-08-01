@@ -1,5 +1,6 @@
 tools/*
 !tools/build_job_script.py
+!tools/filter_variants.py
 log
 report
 metadata
