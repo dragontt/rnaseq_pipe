@@ -132,7 +132,7 @@ def filter_vep_tumor_artifact(vcf):
 			"intron_variant"]
 	valid_indx = []
 	for i,row in vcf.iterrows():
-		if row["Consequence"] not in filter:
+		if all([x not in filter for x in row["Consequence"].split(',')]):
 			valid_indx.append(i)
 	return vcf.loc[valid_indx,:]
 
